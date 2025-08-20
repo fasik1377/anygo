@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, Transition } from 'framer-motion';
 import { Navigation } from './navigation';
 
 interface PageWrapperProps {
@@ -24,7 +24,8 @@ const pageVariants = {
   },
 };
 
-const pageTransition = {
+// ✅ Explicitly tell TypeScript this is a valid Framer Motion Transition
+const pageTransition: Transition = {
   type: 'tween',
   ease: 'anticipate',
   duration: 0.5,
@@ -39,7 +40,7 @@ export const PageWrapper: React.FC<PageWrapperProps> = ({ children, className = 
         animate="in"
         exit="out"
         variants={pageVariants}
-        transition={pageTransition}
+        transition={pageTransition}  
         className={className}
       >
         {children}
