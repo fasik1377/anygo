@@ -32,54 +32,82 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate checking for existing session
-    const savedUser = localStorage.getItem('anygo-user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    // Only run on client
+    if (typeof window !== 'undefined') {
+      try {
+        const savedUser = localStorage.getItem('anygo-user');
+        if (savedUser) {
+          setUser(JSON.parse(savedUser));
+        }
+      } catch (err) {
+        console.error('Error reading from localStorage:', err);
+      }
     }
     setIsLoading(false);
   }, []);
 
   const login = async (email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
-    // Mock authentication - accept any email/password combination
+
+    // Mock authentication
     const mockUser: User = {
       id: '1',
       name: email.split('@')[0],
       email,
     };
-    
+
     setUser(mockUser);
-    localStorage.setItem('anygo-user', JSON.stringify(mockUser));
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('anygo-user', JSON.stringify(mockUser));
+      } catch (err) {
+        console.error('Error writing to localStorage:', err);
+      }
+    }
+
     setIsLoading(false);
     return true;
   };
 
   const signup = async (name: string, email: string, password: string): Promise<boolean> => {
     setIsLoading(true);
-    
+
     // Simulate API call
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     const mockUser: User = {
       id: Math.random().toString(36).substr(2, 9),
       name,
       email,
     };
-    
+
     setUser(mockUser);
-    localStorage.setItem('anygo-user', JSON.stringify(mockUser));
+
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.setItem('anygo-user', JSON.stringify(mockUser));
+      } catch (err) {
+        console.error('Error writing to localStorage:', err);
+      }
+    }
+
     setIsLoading(false);
     return true;
   };
 
   const logout = () => {
     setUser(null);
-    localStorage.removeItem('anygo-user');
+    if (typeof window !== 'undefined') {
+      try {
+        localStorage.removeItem('anygo-user');
+      } catch (err) {
+        console.error('Error removing from localStorage:', err);
+      }
+    }
   };
 
   return (
