@@ -78,6 +78,6 @@ export const useTheme = () => {
 
   if (context === undefined)
     throw new Error('useTheme must be used within a ThemeProvider');
-
+      /* This is comment on account changed */
   return context;
 };
