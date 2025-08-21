@@ -28,20 +28,27 @@ export function ThemeProvider({
   storageKey = 'anygo-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (localStorage.getItem(storageKey) as Theme) || defaultTheme
-  );
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
 
+  // ✅ Load saved theme only after client-side mount
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedTheme = localStorage.getItem(storageKey) as Theme | null;
+      if (savedTheme) {
+        setTheme(savedTheme);
+      }
+    }
+  }, [storageKey]);
+
+  // ✅ Apply theme to <html> element
   useEffect(() => {
     const root = window.document.documentElement;
-
     root.classList.remove('light', 'dark');
 
     if (theme === 'system') {
       const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
         ? 'dark'
         : 'light';
-
       root.classList.add(systemTheme);
       return;
     }
@@ -51,9 +58,11 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (theme: Theme) => {
-      localStorage.setItem(storageKey, theme);
-      setTheme(theme);
+    setTheme: (newTheme: Theme) => {
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(storageKey, newTheme);
+      }
+      setTheme(newTheme);
     },
   };
 
