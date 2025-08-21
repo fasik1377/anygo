@@ -31,7 +31,7 @@ export const Footer: React.FC = () => {
         <div>
           <Link href="/" className="flex items-center space-x-2 mb-4">
             <img
-              src="/images/logo.jpg"
+              src="images/logo.jpg"
               alt="Logo"
               className="h-20 w-20 rounded-lg"
             />

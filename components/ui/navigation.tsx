@@ -44,7 +44,7 @@ export const Navigation: React.FC = () => {
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
 <img 
-  src="/images/logo.jpg" 
+  src="images/logo.jpg" 
   alt="Logo" 
   className="w-16 h-16 rounded-lg object-cover" 
 />
